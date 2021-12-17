@@ -21,6 +21,8 @@ int line = 1;
 [-+*/]          {yylval=ast_operator_init(yytext[0]); return yytext[0];}
 [a-zA-Z]+       {yylval=ast_word_init(yytext); return WORD;}
 [0-9]+          {yylval=ast_number_init(yytext); return NUMBER;}
+\"([^\"]*)\"    {yylval=ast_string_init(yytext); return STRING;}
+(#[^#]*#)       {/* empty */}
 ";"             {return NEW_LINE;}
 %%
 

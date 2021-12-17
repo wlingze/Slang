@@ -7,6 +7,7 @@
 enum{
     AST_NUMBER, 
     AST_WORD,
+    AST_STRING,
     AST_IF_CAUSE, 
     AST_ELSE_CAUSE, 
     AST_FUNCTION , 
@@ -36,5 +37,6 @@ ast_t *ast_get_child(ast_t * this, int index );
 ast_t * ast_number_init(char* number);
 ast_t * ast_word_init(char *word);
 ast_t * ast_operator_init(char operator);
+ast_t * ast_string_init(char *str);
 
 #endif 

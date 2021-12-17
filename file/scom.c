@@ -1,70 +1,97 @@
 
+#include "com/ast.h"
 #include "file/scom.h"
-#include "com/lambda.h"
+#include "lib/lambda.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <string.h>
 
-lambda_t *parse_scom_file(FILE *file);
 
-lambda_t *load_scom_file(char *filename){
-    FILE *file = fopen(filename, "r");
-    lambda_t *main;
-    if (!file){
-        fprintf(stderr, "open file:[%s] error\n", filename);
-        exit(-1);
+#define scom(p, size) fwrite((p), 1, (size), out);
+void save_scom(lambda_t *lambda, FILE *out){
+    int i=0;
+    char *item;
+    int len;
+
+    scom(SCOM_MAGIC, 8);
+
+    // code 
+    scom(&(lambda->code.count), 4);
+    scom(lambda->code.data, lambda->code.count);
+
+    // number 
+    scom(&(lambda->number.count), 4);
+    scom(lambda->number.data, lambda->number.count * 4);
+
+    // string 
+    // word 
+    scom(&(lambda->string.count), 4);
+    scom(&(lambda->word.count), 4);
+
+    vector_each(lambda->string, i, item){
+        len = strlen(item);
+        scom(&(len), 4);
+        scom(item, len);
     }
-    if ((main = parse_scom_file(file)) == NULL){
-        fprintf(stderr, "parse file:[%s] error", filename);
-        exit(-1);
+
+    i = 0;
+    vector_each(lambda->word, i, item){
+        len = strlen(item);
+        scom(&(len), 4);
+        scom(item, len);
     }
-    fclose(file);
-    return main;
 }
-
-lambda_t * parse_scom_file(FILE *file){
-    char magic[8];
-    int code_len, const_array_len;
-
-    if (fread(magic, 1, 8, file) != 8)
-        return NULL;
-    if(strncmp(magic, SCOM_FILE_MAGIC, 8))
-        return NULL;
-    
-    if(fread(&code_len, 1, 4, file) != 4)
-        return NULL;
-
-    if(fread(&const_array_len, 1, 4, file) != 4)
-        return NULL;
-
-    
-    // lambda_t *main_lambda = malloc(sizeof(lambda_t));
-
-    // main_lambda->name = strdup("main");
+#undef scom
 
 
-    char * code = malloc(code_len);
+#define scom(buf, size) fread((buf), 1, (size), in);
+lambda_t* load_scom(char *filename){
+    FILE *in = fopen(filename, "r");
+    int i=0;
+    int len;
+    int string_count, word_count;
+    char * item;
 
-    if(fread(code, 1, code_len, file) != code_len)
-        return NULL;
+    lambda_t *lambda = lambda_init();
 
-    // main_lambda->code = cod;
+    char *magic;
+    scom(magic, 8);
+    if (strcmp(magic, SCOM_MAGIC)){
+        printf("scom file magic error: %s\n", filename);
+        exit(EXIT_FAILURE);
+    }
 
-    // for (int i=0; i<const_array_len; i++){
-    //     int len;
-    //     consts_t *con = malloc(sizeof(consts_t));
-    //     if(fread(&(con->const_type), 1, 4, file) != 4)
-    //         goto faild;
-    //     if(fread(&len, 1, 4, file) != 4)
-    //         goto faild;
-        
-    //     con->const_ptr = malloc(len);
-    //     if(fread(con->const_ptr, 1, len, file) != len)
-    //         goto faild;
-    //     vector_push_back(&main_lambda->consts, con);
-    // }
-//     return main_lambda;
-// faild:
-//     free(main_lambda);
-    return NULL;
+    // code
+    scom(&(lambda->code.count), 4);
+    lambda->code.data = malloc(lambda->code.count);
+    scom(lambda->code.data, lambda->code.count);
+
+    // number 
+    scom(&(lambda->number.count), 4);
+    lambda->number.data = malloc(lambda->number.count);
+    scom(lambda->number.data, lambda->number.count * 4);
+
+    // string 
+    // word 
+    scom(&(string_count), 4);
+    scom(&(word_count), 4);
+
+    for(i=0; i<string_count; i++){
+        scom(&(len), 4);
+        item = malloc(len);
+        scom(item, len);
+        item[len] = 0;
+        vector_push_back(&(lambda->string), item);
+    }
+
+    for(i=0; i<word_count; i++){
+        scom(&(len), 4);
+        item = malloc(len);
+        scom(item, len);
+        item[len] = 0;
+        vector_push_back(&(lambda->word), item);
+    }
+
+    return lambda;
 }

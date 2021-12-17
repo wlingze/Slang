@@ -1,8 +1,27 @@
-
-
 #include "com/ast.h"
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
+
+
+#define pthis ast_t* this
+ast_t* ast_add_child(pthis, ast_t* child){
+    vector_push_back(&(this->child), child);
+    return this;
+}
+
+ast_t *ast_get_child(pthis, int index ){
+    if (index < this->child.count)
+        return this->child.data[index];
+    return NULL;
+}
+
+ast_t* ast_to(pthis, int type){
+    this->type = type;
+    return this;
+}
+
+#undef pthis
 
 ast_t* ast_init_type(int type){
     ast_t *ast = malloc(sizeof(ast_t));
@@ -10,13 +29,6 @@ ast_t* ast_init_type(int type){
     vector_init(&(ast->child));
     return ast;
 }
-
-
-ast_t* ast_add_child(ast_t * this, ast_t* child){
-    vector_push_back(&(this->child), child);
-    return this;
-}
-
 
 ast_t * ast_init(int type, int count, ...){
 
@@ -31,19 +43,6 @@ ast_t * ast_init(int type, int count, ...){
     return this;
 }
 
-ast_t *ast_get_child(ast_t * this, int index ){
-    if (index < this->child.count)
-        return this->child.data[index];
-    return NULL;
-}
-
-
-
-
-ast_t* ast_to(ast_t * this, int type){
-    this->type = type;
-    return this;
-}
 
 ast_t * ast_number_init(char* number){
     ast_t * ast = ast_init_type(AST_NUMBER);
@@ -60,5 +59,13 @@ ast_t * ast_word_init(char *word){
 ast_t * ast_operator_init(char operator){
     ast_t * ast = ast_init_type(AST_OPERATOR);
     ast->char_value = operator;
+    return ast;
+}
+
+ast_t * ast_string_init(char *str){
+    ast_t * ast = ast_init_type(AST_STRING);
+    str ++;
+    str[strlen(str)-1] = 0;
+    ast->string_value = strdup(str);
     return ast;
 }

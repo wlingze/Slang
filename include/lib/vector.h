@@ -1,20 +1,10 @@
 
 #ifndef LIB_VECTOR
-
-typedef struct vector {
-    unsigned int count;
-    unsigned int capacity;
-    void **data;
-} vector_t;
+#define LIB_VECTOR
 
 #define VECTOR_INIT_SIZE 0x20
+#include <stddef.h>
 
-extern void vector_destruction(vector_t *this);
-
-extern void *vector_pop(vector_t *this);
-
-extern void *vector_get(vector_t *this, unsigned int idx);
-extern void vector_set(vector_t *this, unsigned int idx, void *item);
 
 #define vector_each(this, i, item) \
     for (i; (i < (this).count) ? (item = (this).data[i], 1) : 0; i++)
@@ -34,6 +24,12 @@ extern void vector_set(vector_t *this, unsigned int idx, void *item);
         (this)->data = NULL;                                        \
     } while (0)
 
+#define vector_get(this, index)                             \
+    ({                                                      \
+        assert((index) >= 0);                               \
+        assert((index) < (this).count);                    \
+        (this).data[(index)];                              \
+    }) 
 
 #define vector_push_back(this, item)                                \
     do {                                                            \
@@ -53,5 +49,4 @@ extern void vector_set(vector_t *this, unsigned int idx, void *item);
         (this)->count++;                                            \
     } while (0)
 
-#define LIB_VECTOR
 #endif // LIB_VECTOR

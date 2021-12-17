@@ -8,7 +8,7 @@ void yyerror(ast_t **modlue, const char*);
 
 %parse-param { ast_t **module}
 
-%token GIFT REINDEER DELIVERING BACK
+%token GIFT REINDEER DELIVERING BACK STRING
 %token WORD NEW_LINE EQUAL NUMBER
 
 %%
@@ -42,6 +42,8 @@ expr    :   expr OPERATOR expr
         |   WORD               
                 {$$=$1;}
         |   NUMBER             
+                {$$=$1;}
+        |   STRING 
                 {$$=$1;}
         ;
 

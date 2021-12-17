@@ -3,8 +3,7 @@
 #define COM_COMPILE_H
 
 #include "com/ast.h"
-#include "com/lambda.h"
+#include "lib/lambda.h"
 
-void compile_stmts(ast_t * mod, lambda_t * lambda);
-
+void compile_stmts(ast_t * ast, lambda_t * lambda);
 #endif

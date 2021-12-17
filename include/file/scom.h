@@ -1,17 +1,12 @@
 
 #ifndef FILE_SCOM_H
-#define FILE_SCOM_H
+#define FILE_SCOM_H 
+#include "lib/lambda.h"
+#include <stdio.h>
 
-#include "lib/vector.h"
+#define SCOM_MAGIC  "SCOM_LZ\x00"
 
-typedef struct consts{
-    int const_type;
-    void * const_ptr;
-} consts_t;
+void save_scom(lambda_t *lambda, FILE *out);
+lambda_t* load_scom(char *filename);
 
-
-
-#define SCOM_FILE_MAGIC "SCOMFILE"
-
-
-#endif
+#endif 

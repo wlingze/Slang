@@ -1,7 +1,6 @@
 
 #include <stdio.h>
-#include "com/lambda.h"
-#include "file/file.h"
+#include "lib/lambda.h"
 #include "com/ast.h"
 #include "SLang.h"
 
@@ -14,6 +13,7 @@ ast_t* front_process(char *slang_file){
     ast_t * module;
     module = NULL;
     yyparse(&module);
+    fclose(in);
     return module;
 }
 
@@ -21,6 +21,8 @@ void back_process(ast_t* module, char * scom_file){
     FILE * out = fopen(scom_file, "w");
     lambda_t *lambda = lambda_init();
     compile_stmts(module, lambda);
+    save_scom(lambda, out);
+    fclose(out);
 }
 
 void compile_file(char *slang_file, char *scom_file){   
