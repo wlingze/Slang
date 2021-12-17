@@ -4,6 +4,6 @@
 
 #include "file/scom.h"
 
-lambda_t *load_file(char *path);
+void load_file(char *path);
 
 #endif 

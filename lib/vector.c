@@ -3,24 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-void vector_init(vector_t *this){
-    this->count = 0;
-    this->capacity = VECTOR_INIT_SIZE;
-    this->data = malloc(this->capacity * sizeof(void *));
-}
-
 void vector_destruction(vector_t *this){
     free(this->data);
-}
-
-void vector_push(vector_t *this, void *item){
-    if(this->count >= this->capacity){
-        this->capacity *= 2;
-        unsigned int size = this->capacity * sizeof(void *);
-        this->data = realloc(this->data, size);
-    }
-    this->data[this->count] = item;
-    this->count ++;
 }
 
 

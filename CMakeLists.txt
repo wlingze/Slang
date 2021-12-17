@@ -6,8 +6,8 @@ include_directories(include)
 
 find_package(BISON)
 find_package(FLEX)
-BISON_TARGET(Parser com/gram.y  ${CMAKE_CURRENT_BINARY_DIR}/gram.c)
-FLEX_TARGET(Scanner com/token.l ${CMAKE_CURRENT_BINARY_DIR}/scanner.c)
+BISON_TARGET(Parser com/parser.y  ${CMAKE_CURRENT_BINARY_DIR}/parser.c)
+FLEX_TARGET(Scanner com/scanner.l ${CMAKE_CURRENT_BINARY_DIR}/scanner.c)
 message(STATUS "BISON: " ${BISON_Parser_OUTPUTS})
 message(STATUS "FLEX: " ${FLEX_Scanner_OUTPUTS})
 
@@ -23,9 +23,7 @@ file(GLOB_RECURSE COM_C_SOURCE "com/*.c")
 set(COM_SOURCE ${COM_C_SOURCE} ${BISON_Parser_OUTPUTS} ${FLEX_Scanner_OUTPUTS})
 
 
-file(GLOB_RECURSE GC_SOURCE "vm/gc/*.c")
-file(GLOB_RECURSE RUNTIME_SOURCE "vm/runtime/*.c")
-set(VM_SOURCE ${GC_SOURCE} ${RUNTIME_SOURCE})
+file(GLOB_RECURSE VM_SOURCE "vm/*.c")
 
 message(STATUS "MAIN: " ${MAIN})
 message(STATUS "LIB_SOURCE: " ${LIB_SOURCE})

@@ -1,5 +1,6 @@
 
 #include "file/scom.h"
+#include "com/lambda.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,9 +38,9 @@ lambda_t * parse_scom_file(FILE *file){
         return NULL;
 
     
-    lambda_t *main_lambda = malloc(sizeof(lambda_t));
+    // lambda_t *main_lambda = malloc(sizeof(lambda_t));
 
-    main_lambda->name = strdup("__main__");
+    // main_lambda->name = strdup("main");
 
 
     char * code = malloc(code_len);
@@ -47,23 +48,23 @@ lambda_t * parse_scom_file(FILE *file){
     if(fread(code, 1, code_len, file) != code_len)
         return NULL;
 
-    main_lambda->code = code;
+    // main_lambda->code = cod;
 
-    for (int i=0; i<const_array_len; i++){
-        int len;
-        consts_t *con = malloc(sizeof(consts_t));
-        if(fread(&(con->const_type), 1, 4, file) != 4)
-            goto faild;
-        if(fread(&len, 1, 4, file) != 4)
-            goto faild;
+    // for (int i=0; i<const_array_len; i++){
+    //     int len;
+    //     consts_t *con = malloc(sizeof(consts_t));
+    //     if(fread(&(con->const_type), 1, 4, file) != 4)
+    //         goto faild;
+    //     if(fread(&len, 1, 4, file) != 4)
+    //         goto faild;
         
-        con->const_ptr = malloc(len);
-        if(fread(con->const_ptr, 1, len, file) != len)
-            goto faild;
-        vector_push(&(main_lambda->consts), con);
-    }
-    return main_lambda;
-faild:
-    free(main_lambda);
+    //     con->const_ptr = malloc(len);
+    //     if(fread(con->const_ptr, 1, len, file) != len)
+    //         goto faild;
+    //     vector_push_back(&main_lambda->consts, con);
+    // }
+//     return main_lambda;
+// faild:
+//     free(main_lambda);
     return NULL;
 }

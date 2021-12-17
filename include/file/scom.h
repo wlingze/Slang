@@ -9,14 +9,7 @@ typedef struct consts{
     void * const_ptr;
 } consts_t;
 
-typedef struct lambda{
-    char *name;
-    char *code;
-    vector_template(consts_t, consts);
-} lambda_t;
 
-
-lambda_t *load_scom_file(char *filename);
 
 #define SCOM_FILE_MAGIC "SCOMFILE"
 

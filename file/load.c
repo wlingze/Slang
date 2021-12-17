@@ -1,5 +1,7 @@
 #include "file/scom.h"
-#include "com/com_file.h"
+#include "com/com.h"
+#include "com/lambda.h"
+#include "vm/vm_call.h"
 #include "SLang.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,7 +57,8 @@ void load_file(char *path){
     } else if (FLAG == RUN){
         if (is_slang)
             compile_file(slang_file, scom_file);
-        load_scom_file(scom_file);
+        // lambda_t *lambda = load_scom_file(scom_file);
+        // vm_call_lambda(lambda);
     }
 
 }
