@@ -31,6 +31,13 @@
         (this).data[(index)];                              \
     }) 
 
+#define vector_set(this, index, item)                             \
+    ({                                                      \
+        assert((index) >= 0);                               \
+        assert((index) < (this)->count);                    \
+        (this)->data[(index)] = (item);                              \
+    }) 
+
 #define vector_push_back(this, item)                                \
     do {                                                            \
         int item_size = sizeof((this)->data[0]);                    \

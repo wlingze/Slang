@@ -36,6 +36,13 @@ char* lambda_get_word(pthis, int idx){
     return vector_get(this->word, idx);
 }
 
+int lambda_get_code_count(pthis){
+    return this->code.count;
+}
+
+int lambda_set_code(pthis, int idx, char code){
+    vector_set(&(this->code), idx, code);
+}
 
 int lambda_set_string(pthis, char * str){
     
@@ -76,12 +83,6 @@ int lambda_set_number(pthis, int num){
     return this->number.count-1;
 }
 
-void  lambda_emit_insn_debug(pthis, char * fmt, ...){
-    va_list ap;
-    va_start(ap, fmt);  
-    vprintf(fmt, ap);
-    va_end(ap);
-}
 
 void lambda_insn(pthis, char opcode){
     vector_push_back(&(this->code), opcode);
@@ -98,10 +99,12 @@ void emit_insn_call(pthis, ast_t *ast){
         break
 void emit_insn_operator(pthis, ast_t *ast){
     switch(ast->char_value){
-        map('+', OP_BINARY_ADD);
-        map('-', OP_BINARY_SUB);
-        map('*', OP_BINARY_MUL);
-        map('/', OP_BINARY_DIV);
+        map('+', OP_ADD);
+        map('-', OP_SUB);
+        map('*', OP_MUL);
+        map('/', OP_DIV);
+        map('>', OP_GRAETER);
+        map('?', OP_EQUAL);
     }
 }
 #undef map
@@ -142,5 +145,37 @@ void  lambda_emit_insn(pthis, int opcode, ast_t *ast){
 
 }
 #undef map
+
+void emit_insn_jz(pthis, int redirection, int offset){
+    if (redirection == this->code.count){
+        insn(OP_JZ);
+        insn(J_FORWORD);
+        insn((offset >> 8) & 0xff);
+        insn(offset & 0xff);
+    } else {
+        redirection ++;
+        if (offset < 0){
+            offset = -offset;
+            lambda_set_code(this, redirection++, J_BACK);
+        } else {
+            redirection ++;
+        }
+        lambda_set_code(this, redirection++, (offset >> 8) & 0xff);
+        lambda_set_code(this, redirection++, offset & 0xff);
+    }
+}
+
+void emit_insn_jmp(pthis, int target){
+    int offset = target - (lambda_get_code_count(this) + 4);
+    insn(OP_JMP);
+    if (offset < 0){
+        offset = -offset;
+        insn(J_BACK);
+    } else {
+        insn(J_FORWORD);
+    }
+    insn((offset >> 8) & 0xff);
+    insn(offset & 0xff);
+}
 
 #undef pthis

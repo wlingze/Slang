@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include <assert.h>
 
 
 #define pthis ast_t* this
@@ -11,9 +12,11 @@ ast_t* ast_add_child(pthis, ast_t* child){
 }
 
 ast_t *ast_get_child(pthis, int index ){
-    if (index < this->child.count)
-        return this->child.data[index];
-    return NULL;
+    return vector_get(this->child, index);
+}
+
+int ast_get_child_count(pthis){
+    return this->child.count;
 }
 
 ast_t* ast_to(pthis, int type){

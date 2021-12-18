@@ -14,6 +14,10 @@ enum{
     AST_OPERATOR, 
     AST_EXPR , 
     AST_STMT, 
+    AST_WANT, 
+    AST_LISTS, 
+    AST_LIST, 
+    AST_AGAIN
 
 };
 
@@ -27,12 +31,14 @@ typedef struct ast{
     vector_template(struct ast*, child);
 } ast_t;
 
-#define ast_each_child(ast, i, child) \
-    vector_each(ast->child, i, child)
+#define ast_each_child(ast, i, item) \
+    vector_each((ast)->child, i, (item))
 
 ast_t * ast_init(int type, int count, ...);
+ast_t* ast_init_type(int type);
 ast_t* ast_add_child(ast_t * this, ast_t* child);
 ast_t *ast_get_child(ast_t * this, int index );
+int ast_get_child_count(ast_t * this);
 
 ast_t * ast_number_init(char* number);
 ast_t * ast_word_init(char *word);

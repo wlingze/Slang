@@ -4,9 +4,9 @@
 #include "lib/lambda.h"
 #include "lib/opcode.h"
 #include "lib/vector.h"
+#include "com/com_want.h"
 
 #define arg ast_t *ast, lambda_t* lambda
-
 
 void compile_number(arg){
     emit_insn(OP_LOAD_NUMBER, ast);
@@ -29,7 +29,6 @@ void compile_function(arg){
     ast_t *arg1 = ast_get_child(ast, 1);
     ast_t *arg2 = ast_get_child(ast, 2);
     ast_t *arg3 = ast_get_child(ast, 3);
-    ast_t * ret = ast_get_child(ast, 4);
 
     emit_insn(OP_LOAD_WORD, arg1);
     emit_insn(OP_LOAD_WORD, arg2);
@@ -37,9 +36,12 @@ void compile_function(arg){
 
     emit_insn_call(lambda, func);
 
-    if (ret){
-        emit_insn(OP_STORE, ret);
+    if (ast_get_child_count(ast) == 5){
+        ast_t *ret = ast_get_child(ast, 4);
+        if (ret->type == AST_WORD)
+            emit_insn(OP_STORE, ret);
     }
+    
 }
 
 
@@ -53,15 +55,13 @@ void compile_expr(arg){
     ast_t * operator = ast_get_child(ast, 1);
     ast_t * right    = ast_get_child(ast, 2);
 
-
-    switch(right->type){
-        map(right, EXPR, expr);
-        map(right, WORD, word_push);
-        map(right, NUMBER, number);
-        map(right, STRING, string);
-    }
-
     if (operator->char_value == '='){
+        switch(right->type){
+            map(right, EXPR, expr);
+            map(right, WORD, word_push);
+            map(right, NUMBER, number);
+            map(right, STRING, string);
+        }
         compile_word_pop(left, lambda);
         return ;
     }
@@ -71,6 +71,14 @@ void compile_expr(arg){
         map(left, WORD, word_push);
         map(left, NUMBER, number);
     }
+
+    switch(right->type){
+        map(right, EXPR, expr);
+        map(right, WORD, word_push);
+        map(right, NUMBER, number);
+        map(right, STRING, string);
+    }
+
     emit_insn_operator(lambda, operator);
 }
 
@@ -78,6 +86,7 @@ void compile_stmt(arg){
     switch(ast->type){
         map(ast, EXPR, expr);
         map(ast, FUNCTION, function);
+        map(ast, WANT, want);
     }
     
 }

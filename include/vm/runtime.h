@@ -16,5 +16,6 @@ typedef struct runtime {
 } runtime_t;
 
 runtime_t* runtime_init();
-u_int64_t runtime_get_gift(runtime_t *this, char *word);
+gift_t* runtime_get_gift(runtime_t *this, char *word);
+void runtime_set_gift(runtime_t*this, gift_t *gift);
 #endif 

@@ -59,5 +59,9 @@ void load_file(char *path){
             compile_file(slang_file, scom_file);
         lambda_t *lambda = load_scom(scom_file);
         vm_call_lambda(lambda);
+    } else if (FLAG == DEASM){
+        if (is_slang)
+            compile_file(slang_file, scom_file);
+        // disasm_scom(scom_file);
     }
 }

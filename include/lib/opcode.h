@@ -9,11 +9,21 @@ enum {
     OP_LOAD_WORD, 
 
     OP_CALL, 
+    OP_JZ, 
+    OP_JMP,
 
-    OP_BINARY_ADD, 
-    OP_BINARY_SUB,
-    OP_BINARY_DIV, 
-    OP_BINARY_MUL, 
+    OP_ADD, 
+    OP_SUB,
+    OP_DIV, 
+    OP_MUL, 
+
+    OP_GRAETER, 
+    OP_EQUAL
+};
+
+enum{
+    J_FORWORD, 
+    J_BACK
 };
 
 

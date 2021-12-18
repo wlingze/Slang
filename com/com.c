@@ -10,18 +10,18 @@ extern int yyparse (ast_t **modlue);
 ast_t* front_process(char *slang_file){
     FILE * in = fopen(slang_file, "r");
     yyin = in;
-    ast_t * module;
-    module = NULL;
-    yyparse(&module);
+    ast_t * m;
+    m = NULL;
+    yyparse(&m);
     fclose(in);
-    return module;
+    return m;
 }
 
-void back_process(ast_t* module, char * scom_file){
+void back_process(ast_t* m, char * scom_file){
     FILE * out = fopen(scom_file, "w");
-    lambda_t *lambda = lambda_init();
-    compile_stmts(module, lambda);
-    save_scom(lambda, out);
+    lambda_t *l = lambda_init();
+    compile_stmts(m, l);
+    save_scom(l, out);
     fclose(out);
 }
 
