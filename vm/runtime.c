@@ -1,6 +1,7 @@
 
 #include "vm/runtime.h"
 #include "lib/gift.h"
+#include "lib/lambda.h"
 #include <sys/types.h>
 #include <stdlib.h>
 

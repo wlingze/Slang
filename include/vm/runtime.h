@@ -5,6 +5,7 @@
 #include "lib/gift.h"
 #include "lib/vector.h"
 #include "lib/stack.h"
+#include "lib/lambda.h"
 
 typedef struct runtime {
     int64_t rip;

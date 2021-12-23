@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(SLang C)
 
+add_compile_options(-Wall -fno-stack-protector)
+
 include_directories(include)
 
 find_package(BISON)
@@ -24,16 +26,19 @@ set(COM_SOURCE ${COM_C_SOURCE} ${BISON_Parser_OUTPUTS} ${FLEX_Scanner_OUTPUTS})
 
 
 file(GLOB_RECURSE VM_SOURCE "vm/*.c")
+file(GLOB_RECURSE DIS_SOURCE "disasm/*.c")
 
 message(STATUS "MAIN: " ${MAIN})
 message(STATUS "LIB_SOURCE: " ${LIB_SOURCE})
 message(STATUS "FILE_SOURCE: " ${FILE_SOURCE})
 message(STATUS "COM_SOURCE: " ${COM_SOURCE})
 message(STATUS "VM_SOURCE: " ${VM_SOURCE})
+message(STATUS "DIS_SOURCE: " ${DIS_SOURCE})
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
 
 add_executable(slang ${MAIN} 
         ${LIB_SOURCE} ${FILE_SOURCE} 
-        ${VM_SOURCE} ${COM_SOURCE})
+        ${VM_SOURCE} ${COM_SOURCE} 
+        ${DIS_SOURCE})

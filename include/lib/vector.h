@@ -7,7 +7,7 @@
 
 
 #define vector_each(this, i, item) \
-    for (i; (i < (this).count) ? (item = (this).data[i], 1) : 0; i++)
+    for ((i); ((i) < (this).count) ? ((item) = (this).data[(i)], 1) : 0; (i)++)
 
 
 #define vector_template(data_t, vector)     \

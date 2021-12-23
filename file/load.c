@@ -2,6 +2,7 @@
 #include "com/com.h"
 #include "lib/lambda.h"
 #include "vm/vm_call.h"
+#include "disasm/disasm.h"
 #include "SLang.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,15 +54,17 @@ void load_file(char *path){
     sprintf(scom_file, "%s/%s.scom", dir, name);
 
     if (FLAG == COMPILE){
-        compile_file(slang_file, scom_file);
-    } else if (FLAG == RUN){
+        if (is_slang)
+            compile_file(slang_file, scom_file);
+        printf("compile file scom\n");
+    } else {
         if (is_slang)
             compile_file(slang_file, scom_file);
         lambda_t *lambda = load_scom(scom_file);
-        vm_call_lambda(lambda);
-    } else if (FLAG == DEASM){
-        if (is_slang)
-            compile_file(slang_file, scom_file);
-        // disasm_scom(scom_file);
+
+        if (FLAG == RUN)
+            vm_call_lambda(lambda);
+        if (FLAG == DISASM)
+            disasm(lambda);
     }
 }

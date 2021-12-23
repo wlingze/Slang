@@ -1,19 +1,25 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "lib/lambda.h"
 #include "com/ast.h"
 #include "SLang.h"
 
 extern FILE * yyin;
+extern FILE * yyout;
 extern int yyparse (ast_t **modlue);
 
 ast_t* front_process(char *slang_file){
-    FILE * in = fopen(slang_file, "r");
-    yyin = in;
-    ast_t * m;
-    m = NULL;
+    yyin = fopen(slang_file, "r");
+    if (!yyin){
+        printf("don't open file %s", slang_file);
+        exit(EXIT_FAILURE);
+    }
+    yyout = fopen("/dev/null", "w");
+    ast_t * m = NULL;
     yyparse(&m);
-    fclose(in);
+    fclose(yyin);
+    fclose(yyout);
     return m;
 }
 

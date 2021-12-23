@@ -64,13 +64,17 @@ void vm_opcode_call(arg){
 
     if (is_func("Rudolph")){
         ret = write(arg1, arg2, arg3);
-        // printf("error: \n%s", rudolph);
+        // printf("error: \n%s\n", rudolph);
     }
     if (is_func("Dasher")){
         ret = read(arg1, arg2, arg3);
     }
     if (is_func("Dancer")){
         ret = open(arg1, arg2, arg3);
+        if(ret < 0){
+            printf("error con't open file %s", arg1);
+            exit(EXIT_FAILURE);
+        }
     }
     if (is_func("Prancer")){
         ret = strncmp(arg1, arg2, arg3);
@@ -123,7 +127,7 @@ void vm_opcode_operator(arg, int opcode){
     }
 }
 
-void check_next(arg){
+void check_next(runtime_t *r, lambda_t * l){
     if (r->rip >= l->code.count)
         r->is_run = 0;
 }
@@ -132,16 +136,15 @@ void check_next(arg){
   case OP_##OPCODE:                                                            \
     vm_opcode_##opcode(r, l);                                                  \
     break
-
 #define operator(OPCODE)                                                \
-  case OP_##OPCODE:                                                            \
-    vm_opcode_operator(r, l, OP_##OPCODE);                                                  \
+  case OP_##OPCODE:                                                     \
+    vm_opcode_operator(r, l, OP_##OPCODE);                              \
     break
 void vm_call_lambda(lambda_t *l){
     runtime_t *r = runtime_init();
 
     while(r->is_run){
-        switch(lambda_get_code(next)){
+        switch(get_code){
             display(STORE, store);
             display(LOAD_NUMBER, load_number);
             display(LOAD_STRING, load_string);
@@ -160,7 +163,6 @@ void vm_call_lambda(lambda_t *l){
         }
         check_next(r, l);
     }
-
 }
 
 #undef arg

@@ -6,7 +6,6 @@
 #include "com/ast.h"
 
 typedef struct lambda{
-    char *name;
     vector_template(char, code);
     vector_template(int, number);
     vector_template(char *, string);

@@ -80,6 +80,9 @@ lambda_t* load_scom(char *filename){
     for(i=0; i<string_count; i++){
         scom(&(len), 4);
         item = malloc(len);
+        #ifdef SLANG_DEBUG
+            log()
+        #endif 
         scom(item, len);
         item[len] = 0;
         vector_push_back(&(lambda->string), item);

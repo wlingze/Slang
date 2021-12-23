@@ -23,10 +23,10 @@ int main(int argc, char * argv[]){
     }
     if (!strcmp(sig, "-c")){
         FLAG = COMPILE;
-    } else if (!strcmp(sig, "-d")){
-        FLAG = DEASM;
     } else if (!strcmp(sig, "-g")){
         FLAG = DEBUG;
+    } else if (!strcmp(sig, "-d")){
+        FLAG = DISASM;
     } else if (!strcmp(sig, "-r")){
         FLAG = RUN;
     } else {
