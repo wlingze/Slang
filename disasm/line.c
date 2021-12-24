@@ -41,7 +41,7 @@ void line_puts(pthis){
     addr_t *item;
     vector_each(this->asm_code, i, item){
         line_is_target(this, item);
-        printf("%d\t%s", item->addr, item->disasm);
+        printf("%d\t%s\n", item->addr, item->disasm);
     }
 }
 
@@ -50,7 +50,6 @@ void line_fmt(pthis,int addr, char *fmt, ...){
     char buffer[0x80];
     
     va_start(ap, fmt);
-    // vsnprintf(buffer, 0x80, fmt, ap);
     vsprintf(buffer, fmt, ap);
     va_end(ap);
     line_code(this, addr, buffer);

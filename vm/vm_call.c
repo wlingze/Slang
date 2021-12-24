@@ -20,7 +20,7 @@
 #define push(item)      stack_push(r->stack, (u_int64_t)(item))
 #define get_gift(word)      runtime_get_gift(r, (word))
 
-char * rudolph = "Rudolph has been with Santa. \nGoing to deliver presents soon!\nYou can't get him to help. \nQaQ";
+char * rudolph = "Rudolph has been with Santa. \nGoing to deliver presents soon!\nYou can't get him to help. \nAnd you can't talk when playing Christmas songs!\n";
 
 
 void vm_opcode_store(runtime_t *r, lambda_t *l){
@@ -71,8 +71,8 @@ void vm_opcode_call(arg){
     }
     if (is_func("Dancer")){
         ret = open(arg1, arg2, arg3);
-        if(ret < 0){
-            printf("error con't open file %s", arg1);
+        if((int)ret < 0){
+            printf("error con't open file %s\n", arg1);
             exit(EXIT_FAILURE);
         }
     }

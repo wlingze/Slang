@@ -50,8 +50,8 @@ void load_file(char *path){
 
     int is_slang = check_suffix(path, dir, name);
 
-    sprintf(slang_file, "%s/%s.slang", dir, name);
-    sprintf(scom_file, "%s/%s.scom", dir, name);
+    snprintf(slang_file, 0x120, "%s/%s.slang", dir, name);
+    snprintf(scom_file, 0x120, "%s/%s.scom", dir, name);
 
     if (FLAG == COMPILE){
         if (is_slang)

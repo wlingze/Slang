@@ -69,7 +69,7 @@ lambda_t* load_scom(char *filename){
 
     // number 
     scom(&(lambda->number.count), 4);
-    lambda->number.data = malloc(lambda->number.count);
+    lambda->number.data = malloc(lambda->number.count * 4);
     scom(lambda->number.data, lambda->number.count * 4);
 
     // string 
@@ -80,9 +80,6 @@ lambda_t* load_scom(char *filename){
     for(i=0; i<string_count; i++){
         scom(&(len), 4);
         item = malloc(len);
-        #ifdef SLANG_DEBUG
-            log()
-        #endif 
         scom(item, len);
         item[len] = 0;
         vector_push_back(&(lambda->string), item);

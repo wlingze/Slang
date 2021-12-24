@@ -17,22 +17,24 @@ int main(int argc, char * argv[]){
         help();
     }
 
-    char * sig = argv[1];
-    if (sig == NULL){
-        return 1;
+    for(int i=1; i<argc; i+=2){
+        char * sig = argv[i];
+        if (sig == NULL){
+            return 1;
+        }
+        if (!strcmp(sig, "-c")){
+            FLAG = COMPILE;
+        } else if (!strcmp(sig, "-g")){
+            FLAG = DEBUG;
+        } else if (!strcmp(sig, "-d")){
+            FLAG = DISASM;
+        } else if (!strcmp(sig, "-r")){
+            FLAG = RUN;
+        } else {
+            help();
+            return 0;
+        }
+        load_file(argv[i+1]);
     }
-    if (!strcmp(sig, "-c")){
-        FLAG = COMPILE;
-    } else if (!strcmp(sig, "-g")){
-        FLAG = DEBUG;
-    } else if (!strcmp(sig, "-d")){
-        FLAG = DISASM;
-    } else if (!strcmp(sig, "-r")){
-        FLAG = RUN;
-    } else {
-        help();
-        return 0;
-    }
-    load_file(argv[2]);
     return 0;
 }

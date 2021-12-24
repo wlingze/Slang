@@ -26,13 +26,18 @@ void compile_list(arg){
 
     compile_stmts(stmts, lambda);
 
-    int offset = lambda_get_code_count(lambda) - redirection;
-    emit_insn_jz(lambda, redirection, offset);
+    int offset = lambda_get_code_count(lambda) - redirection - 4;
 
-    if (ast_get_child_count(ast) == 4)
-        if(ast_get_child(ast, 3)->type == AST_AGAIN)
+    if (ast_get_child_count(ast) == 4){
+        if(ast_get_child(ast, 3)->type == AST_AGAIN){
             emit_insn_jmp(lambda, start);
+            emit_insn_jz(lambda, redirection, offset + 4);
+        }
+    } else {
+            emit_insn_jz(lambda, redirection, offset);
+    }
 }
+
 #undef map
 #undef arg
 

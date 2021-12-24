@@ -16,26 +16,26 @@
 
 
 void disasm_store(arg){
-    output(r->rip-2, "pop\t%s\n", get_word);
+    output(r->rip-2, "pop\t%s", get_word);
 }
 
 void disasm_load_number(arg){
-    output(r->rip-2, "push\t%d\n", get_number);
+    output(r->rip-2, "push\t%d", get_number);
 }
 
 void disasm_load_string(arg){
-    output(r->rip-2, "push\t\"%s\"\n", get_string);
+    output(r->rip-2, "push\t\"%s\"", get_string);
 }
 
 void disasm_load_word(arg){
-    output(r->rip-2, "push\t%s\n", get_word);
+    output(r->rip-2, "push\t%s", get_word);
 }
 
 #define is_func(func_name) \
     !strcmp(func, (func_name))
 void disasm_call(arg){
     char *func = get_word;
-    output(r->rip-2, "call\t%s\n", func);
+    output(r->rip-2, "call\t%s", func);
 }
 #undef is_func
 
@@ -53,32 +53,32 @@ int jmp_target(arg){
     return target;
 }
 void disasm_jz(arg){
-    output(r->rip-4, "jz\t%d\n\n", jmp_target(r, l));
+    output(r->rip-4, "jz\t%d\n", jmp_target(r, l));
 }
 
 void disasm_jmp(arg){
-    output(r->rip-4, "jmp\t%d\n\n", jmp_target(r, l));
+    output(r->rip-4, "jmp\t%d\n", jmp_target(r, l));
 }
 
 void disasm_operator(arg, int opcode){
     switch (opcode){
         case OP_ADD:
-            output(r->rip-1, "add\n");
+            output(r->rip-1, "add");
             break;
         case OP_SUB:
-            output(r->rip-1, "sub\n");
+            output(r->rip-1, "sub");
             break;
         case OP_MUL:
-            output(r->rip-1, "mul\n");
+            output(r->rip-1, "mul");
             break;
         case OP_DIV:
-            output(r->rip-1, "div\n");
+            output(r->rip-1, "div");
             break;
         case OP_GRAETER:
-            output(r->rip-1, "graeter\n");
+            output(r->rip-1, "graeter");
             break;
         case OP_EQUAL:
-            output(r->rip-1, "equal\n");
+            output(r->rip-1, "equal");
             break;
     }
 }
