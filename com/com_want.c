@@ -26,7 +26,7 @@ void compile_list(arg){
 
     compile_stmts(stmts, lambda);
 
-    int offset = lambda_get_code_count(lambda) - redirection - 4;
+    unsigned int offset = lambda_get_code_count(lambda) - redirection - 4;
 
     if (ast_get_child_count(ast) == 4){
         if(ast_get_child(ast, 3)->type == AST_AGAIN){

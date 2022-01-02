@@ -25,7 +25,7 @@ int lambda_get_code_count(lambda_t *this);
 void lambda_insn(lambda_t *this, char opcode);
 #define insn(opcode) lambda_insn(this, (opcode));
 void emit_insn_operator(lambda_t*this, ast_t *ast);
-void emit_insn_jz(lambda_t*this, int redirection, int offset);
+void emit_insn_jz(lambda_t*this, int redirection, long offset);
 void emit_insn_jmp(lambda_t*this, int target);
 
 #endif

@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <sys/types.h>
+#include <unistd.h>
+#include <string.h>
 
 #define arg runtime_t*r, lambda_t*l
 #define next l,r->rip++ 
@@ -63,8 +65,9 @@ void vm_opcode_call(arg){
     u_int64_t ret;
 
     if (is_func("Rudolph")){
-        ret = write(arg1, arg2, arg3);
-        // printf("error: \n%s\n", rudolph);
+        // ret = write(arg1, arg2, arg3);
+        // No talking while singing Christmas Songs
+        printf("error: \n%s\n", rudolph);
     }
     if (is_func("Dasher")){
         ret = read(arg1, arg2, arg3);
@@ -79,14 +82,17 @@ void vm_opcode_call(arg){
     if (is_func("Prancer")){
         ret = strncmp(arg1, arg2, arg3);
     }
+    if (is_func("Vixen")){
+        ret = memcpy(arg1, arg2, arg3);
+    }
     push(ret);
 }
 #undef is_func
 
 void vm_opcode_jmp(arg){
     int direction = get_code;
-    int offset = 0;
-    offset = (get_code << 8) | get_code;
+    unsigned int offset = 0;
+    offset = (((get_code << 8) & 0xff) | (get_code & 0xff));
     if (direction == J_FORWORD){
         r->rip += offset;
     } else {
@@ -142,6 +148,12 @@ void check_next(runtime_t *r, lambda_t * l){
     break
 void vm_call_lambda(lambda_t *l){
     runtime_t *r = runtime_init();
+
+    // gift to Christmas Bash!
+    // Don't play too late for the party! Remember to sleep!
+
+    // gift_t * gift = gift_init("sleep", sleep);
+    // runtime_set_gift(r, gift);
 
     while(r->is_run){
         switch(get_code){

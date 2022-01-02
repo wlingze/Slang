@@ -146,7 +146,7 @@ void  lambda_emit_insn(pthis, int opcode, ast_t *ast){
 }
 #undef map
 
-void emit_insn_jz(pthis, int redirection, int offset){
+void emit_insn_jz(pthis, int redirection, long offset){
     if (redirection == this->code.count){
         insn(OP_JZ);
         insn(J_FORWORD);

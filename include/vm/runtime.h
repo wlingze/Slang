@@ -2,13 +2,14 @@
 #define VM_RUNTIME
 
 #include <stdint.h>
+#include <sys/types.h>
 #include "lib/gift.h"
 #include "lib/vector.h"
 #include "lib/stack.h"
 #include "lib/lambda.h"
 
 typedef struct runtime {
-    int64_t rip;
+    u_int64_t  rip;
     int64_t r1; 
     int is_run;
 

@@ -39,11 +39,11 @@ void disasm_call(arg){
 }
 #undef is_func
 
-int jmp_target(arg){
+unsigned long jmp_target(arg){
     int direction = get_code;
-    int offset = 0;
-    offset = (get_code << 8) | get_code;
-    int target = r->rip;
+    unsigned long offset = 0;
+    offset = (((get_code << 8) & 0xff) | (get_code & 0xff));
+    unsigned long target = r->rip;
     if (direction == J_FORWORD){
         target += offset;
     } else {
@@ -53,11 +53,11 @@ int jmp_target(arg){
     return target;
 }
 void disasm_jz(arg){
-    output(r->rip-4, "jz\t%d\n", jmp_target(r, l));
+    output(r->rip-4, "jz\t%lu\n", jmp_target(r, l));
 }
 
 void disasm_jmp(arg){
-    output(r->rip-4, "jmp\t%d\n", jmp_target(r, l));
+    output(r->rip-4, "jmp\t%lu\n", jmp_target(r, l));
 }
 
 void disasm_operator(arg, int opcode){
